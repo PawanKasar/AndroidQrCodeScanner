@@ -1,5 +1,7 @@
 package com.example.QrCodeScanner;
 
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +15,14 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     private ZXingScannerView mScannerView;
 
+    ToneGenerator tone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tone = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
 
     }
     //Creating a method to perform onClick() method
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void handleResult(Result rawResult) {
         Log.e("MainActivity",rawResult.getText());                      // Prints scan results
         Log.e("MainActivity",rawResult.getBarcodeFormat().toString());  // Prints the scan format (qrcode)
+
+        tone.startTone(ToneGenerator.TONE_PROP_BEEP,150);
 
         // show the scanner result into dialog box.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
